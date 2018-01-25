@@ -23,8 +23,8 @@ void draw(){
   println(frameRate);
   background(51); 
  
-  for(int x = 1; x < width-1; x++){
-   for(int y = 1; y < height-1; y++){
+  for(int x = 0; x < width; x++){
+   for(int y = 0; y < height; y++){
      float a = grid[x][y].getA();
      float b = grid[x][y].getB();
      float newA = ( a + 
@@ -109,14 +109,22 @@ float laplaceA(int x, int y){
   float sumA = 0;
   
   sumA += grid[x][y].getA() * -1;
-  sumA += grid[x-1][y].getA() * 0.2;
-  sumA += grid[x+1][y].getA() * 0.2;
-  sumA += grid[x][y+1].getA() * 0.2;
-  sumA += grid[x][y-1].getA() * 0.2;
-  sumA += grid[x-1][y-1].getA() * 0.05;
-  sumA += grid[x-1][y+1].getA() * 0.05;
-  sumA += grid[x+1][y-1].getA() * 0.05;
-  sumA += grid[x+1][y+1].getA() * 0.05;
+  if(x != 0)
+    sumA += grid[x-1][y].getA() * 0.2;
+  if(x != width-1)
+    sumA += grid[x+1][y].getA() * 0.2;
+  if(y != height-1)
+    sumA += grid[x][y+1].getA() * 0.2;
+  if(y != 0)
+    sumA += grid[x][y-1].getA() * 0.2;
+  if(x != 0 && y != 0)
+    sumA += grid[x-1][y-1].getA() * 0.05;
+  if(x != 0 && y != height-1)
+    sumA += grid[x-1][y+1].getA() * 0.05;
+  if(x != width-1 && y != 0)
+    sumA += grid[x+1][y-1].getA() * 0.05;
+  if(x != width-1 && y != height-1)
+    sumA += grid[x+1][y+1].getA() * 0.05;
 
   
  return sumA; 
@@ -126,14 +134,22 @@ float laplaceB(int x, int y){
   float sumB = 0;
   
   sumB += grid[x][y].getB() * -1;
-  sumB += grid[x-1][y].getB() * 0.2;
-  sumB += grid[x+1][y].getB() * 0.2;
-  sumB += grid[x][y+1].getB() * 0.2;
-  sumB += grid[x][y-1].getB() * 0.2;
-  sumB += grid[x-1][y-1].getB() * 0.05;
-  sumB += grid[x-1][y+1].getB() * 0.05;
-  sumB += grid[x+1][y-1].getB() * 0.05;
-  sumB += grid[x+1][y+1].getB() * 0.05;
+  if(x != 0)
+    sumB += grid[x-1][y].getB() * 0.2;
+  if(x != width-1)
+    sumB += grid[x+1][y].getB() * 0.2;
+  if(y != height-1)
+    sumB += grid[x][y+1].getB() * 0.2;
+  if(y != 0)
+    sumB += grid[x][y-1].getB() * 0.2;
+  if(x != 0 && y != 0)
+    sumB += grid[x-1][y-1].getB() * 0.05;
+  if(x != 0 && y != height-1)
+    sumB += grid[x-1][y+1].getB() * 0.05;
+  if(x != width-1 && y != 0)
+    sumB += grid[x+1][y-1].getB() * 0.05;
+  if(x != width-1 && y != height-1)
+    sumB += grid[x+1][y+1].getB() * 0.05;
   
   return sumB; 
 }
