@@ -8,27 +8,15 @@ float[] killRate = {0.062, 0.0649, 0.06, .052, .059};
 float timeStep = 1;
 
 // Coral: 0, Mitosis: 1, Flowers: 2, Cloverish Mitosis: 3, Nameless: 4
+String[] rdNames = {"Coral", "Mitosis", "Flowers", "Clover Shaped Mitosis", "Instagram Logo Inside"};
 int rdSelector = 4;
 
 void setup(){
- size(400, 400); 
- pixelDensity(1);
+  // X should be 100 px less than Y due to spacing of text
+  size(700, 800); 
+  pixelDensity(1);
  
- grid = new Cell[width][height];
- next = new Cell[width][height];
- for(int x = 0; x < width; x++){
-   for(int y = 0; y < height; y++){
-     grid[x][y] = new Cell(1, 0);
-     next[x][y] = new Cell(1, 0);
-   }
- }
- 
- for(int i = 190; i < 210; i++){
-   for(int j = 190; j < 210; j++){
-      grid[i][j].setB(1);
-      next[i][j].setB(1);
-   }
- }
+  initialize();
 }
 
 void draw(){
@@ -70,6 +58,46 @@ void draw(){
  updatePixels();
  
  swapGrids();
+ 
+ drawText();
+}
+
+void mouseClicked(){
+  rdSelector = (rdSelector + 1) % feed.length;
+  initialize();
+}
+
+void initialize(){
+  grid = new Cell[width][height];
+  next = new Cell[width][height];
+  for(int x = 0; x < width; x++){
+    for(int y = 0; y < height; y++){
+      grid[x][y] = new Cell(1, 0);
+      next[x][y] = new Cell(1, 0);
+    }
+  }
+
+  int squareSize = floor(random(5, 20));
+  int xStart = width / 2 - squareSize;
+  // The +100 is an offset for the text since text takes 100 px of space
+  int yStart = (height + 100)/ 2  - squareSize;
+  int xEnd = xStart + squareSize;
+  int yEnd = yStart + squareSize;
+  
+  for(int x = xStart; x < xEnd; x++){
+    for(int y = yStart; y < yEnd; y++){
+       grid[x][y].setB(1);
+       next[x][y].setB(1);
+    }
+  }
+}
+
+void drawText(){
+  textSize(32);
+  fill(0, 102, 153); 
+  text("Click to change", 10, 30); 
+  text(rdNames[rdSelector], 10, 60);
+  
 }
 
 void swapGrids(){
