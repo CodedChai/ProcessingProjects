@@ -8,7 +8,7 @@ float[] killRate = {0.062, 0.0649, 0.06, .052, .059};
 float timeStep = 1;
 
 // Coral: 0, Mitosis: 1, Flowers: 2, Cloverish Mitosis: 3, Nameless: 4
-String[] rdNames = {"Coral", "Mitosis", "Flowers", "Clover Shaped Mitosis", "Instagram Logo Inside"};
+String[] rdNames = {"Coral", "Mitosis", "Flowers", "Clover Shaped Mitosis", "Dots"};
 int rdSelector = 4;
 
 void setup(){
@@ -72,8 +72,7 @@ void initialize(){
   next = new Cell[width][height];
   for(int x = 0; x < width; x++){
     for(int y = 0; y < height; y++){
-      grid[x][y] = new Cell(1, 0);
-      next[x][y] = new Cell(1, 0);
+      grid[x][y] = next[x][y] = new Cell(1, 0);
     }
   }
 
@@ -95,7 +94,7 @@ void initialize(){
 void drawText(){
   textSize(32);
   fill(0, 102, 153); 
-  text("Click to change", 10, 30); 
+  text("Click to change pattern", 10, 30); 
   text(rdNames[rdSelector], 10, 60);
   
 }
