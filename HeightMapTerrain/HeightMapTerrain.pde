@@ -9,25 +9,8 @@ color[] terrain;
 int imgWidth;
 int imgHeight;
 
-float groundScale = 10;
-
-// Used for camera movement and rotation
-float xPos = 0;
-float yPos = 0;
-float xMovement = 10;
-float yMovement = 10;
-float xRot = 0;
-float yRot = 0;
-float xRotSpeed = .1;
-float yRotSpeed = .1;
-boolean forward = false;
-boolean backward = false;
-boolean right = false;
-boolean left = false;
-boolean rotUp = false;
-boolean rotDown = false;
-boolean rotLeft = false;
-boolean rotRight = false;
+float groundScale = 5;
+float heightScale = .8;
 
 void setup(){
   size(1280, 720, P3D);
@@ -40,7 +23,7 @@ void setup(){
   terrain = heightmapImg.pixels;
   
   // Graphics settings
-  smooth(2);
+  smooth(8);
   noStroke();
   cam = new QueasyCam(this);
   cam.speed = 1;              // default is 3
@@ -50,10 +33,10 @@ void setup(){
 void draw(){
   float[] terrainGray = rgbToGrayscale(terrain);
   lights();
-
+  directionalLight(51, 51, 51, 0, 0, -1);
+  directionalLight(51, 51, 51, 0, 1, -1);
+  lightSpecular(204, 204, 204);
   background(0);
-
-
   translate(width/2, height/2+50);
   rotateX(PI/2);
   translate(-width/2, -height/2);
@@ -62,10 +45,11 @@ void draw(){
     beginShape(TRIANGLE_STRIP);
     for (int x = 0; x < imgHeight; x++) {
       fill(color(234, 10, 100));
-      vertex(x * groundScale, y * groundScale, terrainGray[x + y * imgWidth]);
-      vertex(x * groundScale, (y+1) * groundScale, terrainGray[x + (y+1) * imgWidth]);
+      specular(102, 102, 102);
+      vertex(x * groundScale, y * groundScale, terrainGray[x + y * imgWidth] * heightScale);
+      vertex(x * groundScale, (y+1) * groundScale, terrainGray[x + (y+1) * imgWidth] * heightScale);
     }
-    endShape();
+    endShape(CLOSE);
   }
 }
 
