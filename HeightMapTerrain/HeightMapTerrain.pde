@@ -7,6 +7,16 @@ int imgHeight;
 
 float groundScale = 10;
 
+// Used for movement
+float xPos = 0;
+float yPos = 0;
+float xMovement = 10;
+float yMovement = 10;
+boolean forward = false;
+boolean backward = false;
+boolean right = false;
+boolean left = false;
+
 void setup(){
   size(1280, 720, P3D);
   heightmapImg = loadImage(filename);
@@ -16,6 +26,9 @@ void setup(){
   //image(heightmapImg, 0, 0);
   //terrain = new color[heightmapImg.width * heightmapImg.height];
   terrain = heightmapImg.pixels;
+  
+  // Graphics settings
+  smooth(2);
 }
 
 void draw(){
@@ -23,23 +36,69 @@ void draw(){
   //for(int i = 0; i < terrainGray.length; i++){
   //  println(terrain[i]);
   //}
-  
+   lights();
   //println(imgWidth * imgHeight);
   
   background(0);
-  stroke(255);
-  noFill();
+  noStroke();
 
-  translate(width/2, height/2+50);
+  translate(width/2 + xPos, height/2+50);
   rotateX(PI/3);
-  translate(-width/2, -height/2);
+  translate(-width/2, -height/2 + yPos);
   for (int y = 1; y < imgWidth-1; y++) {
     beginShape(TRIANGLE_STRIP);
     for (int x = 0; x < imgHeight; x++) {
+      fill(color(234, 10, 100));
       vertex(x * groundScale, y * groundScale, terrainGray[x + y * imgWidth]);
       vertex(x * groundScale, (y+1) * groundScale, terrainGray[x + (y+1) * imgWidth]);
     }
     endShape();
+  }
+  movement();
+}
+
+void movement(){
+  if(left){
+    xPos += xMovement; 
+  }
+  if(right){
+    xPos -= xMovement; 
+  }
+  if(forward){
+    yPos += yMovement; 
+  }
+  if(backward){
+    yPos -= yMovement; 
+  } 
+}
+
+void keyPressed(){
+  if(key == 'a' || key == 'A'){
+    left = true;
+  }
+  if(key == 'd' || key == 'D'){
+    right = true;
+  }
+  if(key == 'w' || key == 'W'){
+    forward = true;
+  }
+  if(key == 's' || key == 'S'){
+    backward = true; 
+  }
+}
+
+void keyReleased(){
+  if(key == 'a' || key == 'A'){
+    left = false;
+  }
+  if(key == 'd' || key == 'D'){
+    right = false;
+  }
+  if(key == 'w' || key == 'W'){
+    forward = false;
+  }
+  if(key == 's' || key == 'S'){
+    backward = false; 
   }
 }
 
