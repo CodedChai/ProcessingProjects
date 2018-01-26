@@ -1,3 +1,7 @@
+import queasycam.*;
+
+QueasyCam cam;
+
 String filename = "Heightmap.png";
 PImage heightmapImg;
 
@@ -7,15 +11,23 @@ int imgHeight;
 
 float groundScale = 10;
 
-// Used for movement
+// Used for camera movement and rotation
 float xPos = 0;
 float yPos = 0;
 float xMovement = 10;
 float yMovement = 10;
+float xRot = 0;
+float yRot = 0;
+float xRotSpeed = .1;
+float yRotSpeed = .1;
 boolean forward = false;
 boolean backward = false;
 boolean right = false;
 boolean left = false;
+boolean rotUp = false;
+boolean rotDown = false;
+boolean rotLeft = false;
+boolean rotRight = false;
 
 void setup(){
   size(1280, 720, P3D);
@@ -29,22 +41,23 @@ void setup(){
   
   // Graphics settings
   smooth(2);
+  noStroke();
+  cam = new QueasyCam(this);
+  cam.speed = 1;              // default is 3
+  cam.sensitivity = 0.25;      // default is 2
 }
 
 void draw(){
   float[] terrainGray = rgbToGrayscale(terrain);
-  //for(int i = 0; i < terrainGray.length; i++){
-  //  println(terrain[i]);
-  //}
-   lights();
-  //println(imgWidth * imgHeight);
-  
-  background(0);
-  noStroke();
+  lights();
 
-  translate(width/2 + xPos, height/2+50);
-  rotateX(PI/3);
-  translate(-width/2, -height/2 + yPos);
+  background(0);
+
+
+  translate(width/2, height/2+50);
+  rotateX(PI/2);
+  translate(-width/2, -height/2);
+
   for (int y = 1; y < imgWidth-1; y++) {
     beginShape(TRIANGLE_STRIP);
     for (int x = 0; x < imgHeight; x++) {
@@ -53,52 +66,6 @@ void draw(){
       vertex(x * groundScale, (y+1) * groundScale, terrainGray[x + (y+1) * imgWidth]);
     }
     endShape();
-  }
-  movement();
-}
-
-void movement(){
-  if(left){
-    xPos += xMovement; 
-  }
-  if(right){
-    xPos -= xMovement; 
-  }
-  if(forward){
-    yPos += yMovement; 
-  }
-  if(backward){
-    yPos -= yMovement; 
-  } 
-}
-
-void keyPressed(){
-  if(key == 'a' || key == 'A'){
-    left = true;
-  }
-  if(key == 'd' || key == 'D'){
-    right = true;
-  }
-  if(key == 'w' || key == 'W'){
-    forward = true;
-  }
-  if(key == 's' || key == 'S'){
-    backward = true; 
-  }
-}
-
-void keyReleased(){
-  if(key == 'a' || key == 'A'){
-    left = false;
-  }
-  if(key == 'd' || key == 'D'){
-    right = false;
-  }
-  if(key == 'w' || key == 'W'){
-    forward = false;
-  }
-  if(key == 's' || key == 'S'){
-    backward = false; 
   }
 }
 
